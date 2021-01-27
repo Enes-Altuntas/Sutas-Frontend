@@ -1,2 +1,2 @@
-# Sutas-Frontend
+# Frontend
 Sütaş Frontend
