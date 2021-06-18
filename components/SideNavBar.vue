@@ -298,6 +298,63 @@
             </v-card-text>
           </v-card>
         </v-dialog>
+        <v-dialog
+          v-model="passDialog"
+          persistent
+          max-width="400px"
+          @keydown.esc="passDialog = false"
+        >
+          <v-card>
+            <v-toolbar color="indexToolbar" dark>
+              <v-toolbar-title>Şifre Değişimi</v-toolbar-title>
+              <v-spacer></v-spacer>
+              <v-icon @click="passDialog = false">clear</v-icon>
+            </v-toolbar>
+            <v-card-text>
+              <v-container fluid grid-list-md>
+                <v-flex xs12>
+                  <v-text-field
+                    clearable
+                    counter
+                    v-model="oldPass"
+                    :append-icon="showPW ? 'visibility_off' : 'visibility'"
+                    :type="showPW ? 'text' : 'password'"
+                    @click:append="showPW = !showPW"
+                    outline
+                    label="Eski Şifre"
+                  ></v-text-field>
+                </v-flex>
+                <v-flex xs12>
+                  <v-text-field
+                    clearable
+                    counter
+                    v-model="newPass"
+                    :append-icon="showPW1 ? 'visibility_off' : 'visibility'"
+                    :type="showPW1 ? 'text' : 'password'"
+                    @click:append="showPW1 = !showPW1"
+                    outline
+                    label="Yeni Şifre"
+                  ></v-text-field>
+                </v-flex>
+                <v-flex xs12>
+                  <v-text-field
+                    :append-icon="showPW2 ? 'visibility_off' : 'visibility'"
+                    :type="showPW2 ? 'text' : 'password'"
+                    @click:append="showPW2 = !showPW2"
+                    clearable
+                    v-model="newPass2"
+                    counter
+                    outline
+                    label="Yeni Şifre (Tekrar)"
+                  ></v-text-field>
+                </v-flex>
+                <v-btn block @click="sendNewPass()" color="success" class="mt-5"
+                  >Gönder</v-btn
+                >
+              </v-container>
+            </v-card-text>
+          </v-card>
+        </v-dialog>
       </v-toolbar>
       <v-list-item
         v-for="item in staticButton"
@@ -345,6 +402,13 @@
         <v-list-item-title>Siparişin Güncel Durumu</v-list-item-title>
       </v-list-item>
 
+      <v-list-item link @click="passDialog = true">
+        <v-list-item-action>
+          <v-icon>vpn_key</v-icon>
+        </v-list-item-action>
+        <v-list-item-title>Şifre Değişimi</v-list-item-title>
+      </v-list-item>
+
       <v-list-item
         v-for="(item, i) in withoutSub"
         :key="'B' + i"
@@ -382,8 +446,15 @@ export default {
   data() {
     return {
       findDialog: false,
+      passDialog: false,
+      showPW: false,
+      showPW1: false,
+      showPW2: false,
       menu: false,
       showSelected: false,
+      oldPass: undefined,
+      newPass: undefined,
+      newPass2: undefined,
       editedEBELN: undefined,
       editedEBELP: undefined,
       editedMATNR: undefined,
@@ -464,6 +535,7 @@ export default {
     ...mapActions({
       logout: "logout",
       sendFilterPo: "sendFilterPo",
+      sendNewPassBack: "sendCode",
       cleanTable: "cleanTable",
     }),
 
@@ -539,6 +611,28 @@ export default {
         BEDAT: this.editedBEDAT,
       };
       this.sendFilterPo({ DATA: poFilter });
+    },
+
+    sendNewPass() {
+      if (this.newPass2 == this.newPass) {
+        var newPass = {
+          OLD_PASS: this.oldPass,
+          NEW_PASS: this.newPass,
+        };
+        this.sendNewPassBack({ DATA: newPass });
+        this.oldPass = undefined;
+        this.newPass = undefined;
+        this.newPass2 = undefined;
+        this.passDialog = false;
+      } else {
+        this.$toast.show("Şifreleriniz birbirleriyle uyuşmamaktadır !", {
+          theme: "bubble",
+          icon: "check",
+          type: "error",
+          position: "bottom-right",
+          duration: 5000,
+        });
+      }
     },
   },
 };

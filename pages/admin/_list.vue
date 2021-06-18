@@ -39,14 +39,14 @@
                   label="Kullanıcı Adı"
                 ></v-text-field>
               </v-flex>
-              <v-flex xs12>
+              <!-- <v-flex xs12>
                 <v-text-field
                   :rules="passsRules"
                   outline
                   v-model="selectedUserInfo.password"
                   label="Şifre"
                 ></v-text-field>
-              </v-flex>
+              </v-flex> -->
               <v-flex xs12>
                 <v-text-field
                   :rules="emailRules"
@@ -194,7 +194,7 @@ export default {
       ],
       passText: undefined,
       showPW: false,
-      passRules: [(v) => !!v || "Şifre zorunludur !"],
+      // passRules: [(v) => !!v || "Şifre zorunludur !"],
       typeRules: [(v) => !!v || "Kullanıcı tipi alanı zorunludur !"],
       emailRules: [(v) => !!v || "E-Mail alanı alanı zorunludur !"],
       passsRules: [(v) => !!v || "Şifre alanı zorunludur !"],
@@ -226,11 +226,11 @@ export default {
           value: "user_type",
           sortable: false,
         },
-        {
-          text: "Şifre",
-          value: "password",
-          sortable: false,
-        },
+        // {
+        //   text: "Şifre",
+        //   value: "password",
+        //   sortable: false,
+        // },
         {
           text: "E-Mail",
           value: "email",
@@ -266,6 +266,7 @@ export default {
       sendDelInfo: "admin/sendDelInfo",
     }),
     detail(item) {
+      debugger;
       this.userDialog = true;
       this.addType = "change";
       this.selectedUserInfo.id = item.id;
@@ -282,7 +283,11 @@ export default {
       this.$refs.addForm.resetValidation();
     },
     sendInfo() {
+      debugger;
       if (this.$refs.addForm.validate()) {
+        if (this.selectedUserInfo.password == undefined) {
+          this.selectedUserInfo.password = "Sütaş123.";
+        }
         this.sendInfoDB({ DATA: this.selectedUserInfo });
         this.userDialog = false;
       }

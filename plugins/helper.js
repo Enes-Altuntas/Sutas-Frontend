@@ -7,6 +7,15 @@ Vue.mixin({
             const [year, month, day] = date.split("-");
             return `${day}/${month}/${year}`;
         },
+        difCheck(date1, date2) {
+            var d1 = new Date(date1);
+            var d2 = new Date(date2);
+
+            var diff = d2.getTime() - d1.getTime();
+
+            var daydiff = diff / (1000 * 60 * 60 * 24);
+            return daydiff;
+        },
         excelExport(arrData, pageName) {
             let csvContent = "data:text/csv;charset=utf-8,\ufeff";
             csvContent += [

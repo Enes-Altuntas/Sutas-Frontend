@@ -870,6 +870,19 @@ export default {
 
     getReportsDB() {
       if (this.$route.fullPath === "/reports/revreport") {
+        if (this.difCheck(this.editedRDATES, this.editedRDATEF) > 60) {
+          this.$toast.show(
+            "Revizyon tarihleri arasında ki fark 60 günden fazla olamaz !",
+            {
+              theme: "bubble",
+              icon: "check",
+              type: "error",
+              position: "bottom-right",
+              duration: 5000,
+            }
+          );
+          return;
+        }
         var reportFilter = {
           EBELN: this.selectedEBELN,
           LIFNR: this.selectedLIFNR,
@@ -881,10 +894,42 @@ export default {
           WHY: this.editedWHY,
           ACTION: "1",
         };
-        if (this.$refs.form.validate()) {
+        if (this.$refs.form != undefined) {
+          if (this.$refs.form.validate()) {
+            this.sendFilter({ DATA: reportFilter });
+          }
+        } else {
           this.sendFilter({ DATA: reportFilter });
         }
       } else {
+        if (this.difCheck(this.editedEINDTS, this.editedEINDTF) > 60) {
+          this.$toast.show(
+            "Onaylı sipariş teslim tarihleri arasında ki fark 60 günden fazla olamaz !",
+            {
+              theme: "bubble",
+              icon: "check",
+              type: "error",
+              position: "bottom-right",
+              duration: 5000,
+            }
+          );
+          return;
+        }
+
+        if (this.difCheck(this.editedMGDATES, this.editedMGDATEF) > 60) {
+          this.$toast.show(
+            "Mal giriş kayıt tarihleri arasında ki fark 60 günden fazla olamaz !",
+            {
+              theme: "bubble",
+              icon: "check",
+              type: "error",
+              position: "bottom-right",
+              duration: 5000,
+            }
+          );
+          return;
+        }
+
         var reportFilter = {
           EBELN: this.selectedEBELN,
           LIFNR: this.selectedLIFNR,
@@ -896,7 +941,11 @@ export default {
           MGDATEF: this.editedMGDATEF,
           ACTION: "2",
         };
-        if (this.$refs.form.validate()) {
+        if (this.$refs.form != undefined) {
+          if (this.$refs.form.validate()) {
+            this.sendFilter({ DATA: reportFilter });
+          }
+        } else {
           this.sendFilter({ DATA: reportFilter });
         }
       }

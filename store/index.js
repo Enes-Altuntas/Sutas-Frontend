@@ -149,7 +149,7 @@ export const actions = {
       value: []
     });
   },
-  
+
   async login({ getters, commit }) {
     const formData = getters.getField("form");
 
@@ -316,7 +316,6 @@ export const actions = {
         value: true
       });
       const response = await this.$axios.post("/findPo", item);
-      debugger
       commit("updateField", {
         path: "findPo",
         value: response.data.findPo
@@ -346,7 +345,8 @@ export const actions = {
   },
 
   async sendCode({ commit }, item) {
-    const token = this.$router.currentRoute.fullPath.replace("/forget/", "");
+    debugger
+    const token = this.$cookies.get("refresh-token");
     this.$axios.defaults.headers.common["Authorization"] = "Bearer " + token;
     try {
       commit("updateField", {
@@ -354,7 +354,6 @@ export const actions = {
         value: true
       });
       const response = await this.$axios.post("/newpass", item);
-
       commit("updateField", {
         path: "valid",
         value: response.data.valid
@@ -368,11 +367,19 @@ export const actions = {
           duration: 5000
         });
       }
+      else {
+        this.$toast.show("Şifreniz kaydedilirken bir hata ile karşılaşıldı !", {
+          theme: "bubble",
+          icon: "check",
+          type: "error",
+          position: "bottom-right",
+          duration: 5000
+        });
+      }
       commit("updateField", {
         path: "loading",
         value: false
       });
-      this.$router.push("/sign");
     } catch (error) {
       commit("updateField", {
         path: "loading",

@@ -37,15 +37,15 @@ export default {
   ],
 
 
-  axios: {
-    baseURL: 'http://127.0.0.1:5000/api/v1',
-    credentials: false
-  },
-
   // axios: {
-  //   baseURL: 'https://tedarikciportalapitest.sutas.com.tr/api/v1',
+  //   baseURL: 'http://127.0.0.1:5000/api/v1',
   //   credentials: false
   // },
+
+  axios: {
+    baseURL: 'https://tedarikciportalapitest.sutas.com.tr/api/v1',
+    credentials: false
+  },
 
   // axios: {
   //   baseURL: 'https://tedarikciportalapi.sutas.com.tr/api/v1',

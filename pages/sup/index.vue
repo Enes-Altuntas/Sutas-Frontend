@@ -218,10 +218,17 @@
       :search="search"
     >
       <template v-slot:[`item.LIFNR`]="{ item }"
-        ><td @click="detay(item)" id="first">{{ item.LIFNR.toString().replace(/\b0+/g, "") }}</td></template
+        ><td @click="detay(item)" id="first">
+          {{ item.LIFNR.toString().replace(/\b0+/g, "") }}
+        </td></template
       >
       <template v-slot:[`item.WAITING_APPR`]="{ item }"
-        ><v-icon @click="revAccept(item)">done</v-icon></template
+        ><v-icon
+          v-if="get_type === 'PUR'"
+          @click="revAccept(item)"
+          color="success"
+          >done</v-icon
+        ></template
       >
       <v-alert slot="no-results" :value="true" color="error" icon="warning"
         >Aradığınız tedarikçi bulunamamıştır !</v-alert
@@ -244,7 +251,7 @@
 }
 
 #first {
-  color: #5EE2FF;
+  color: #5ee2ff;
 }
 
 #second {
@@ -320,8 +327,13 @@ export default {
       },
       headers: [
         {
-          text: "Tedarikçi Adı - No",
+          text: "Tedarikçi No",
           value: "LIFNR",
+          sortable: false,
+        },
+        {
+          text: "Tedarikçi Adı",
+          value: "NAME1",
           sortable: false,
         },
         {
@@ -350,7 +362,7 @@ export default {
           sortable: false,
         },
         {
-          text: "Rev. Onay",
+          text: "",
           value: "WAITING_APPR",
           sortable: false,
         },
@@ -369,6 +381,7 @@ export default {
     ...mapGetters({
       getlist: "supplierInfo/getlist",
       getLoading: "supplierInfo/getLoading",
+      get_type: "getUserType",
     }),
 
     loading() {
@@ -384,12 +397,13 @@ export default {
     }),
 
     detay(item) {
-      debugger
-      this.$router.push("/sup/" + item.LIFNR);
+      debugger;
+      if (this.get_type != "PLA") {
+        this.$router.push("/sup/" + item.LIFNR);
+      }
     },
 
     revAccept(item) {
-      debugger
       this.revDialog = true;
       this.badge = [];
       this.revDialogProps = item;
