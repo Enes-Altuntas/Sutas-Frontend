@@ -2,8 +2,8 @@ import { getField, updateField } from 'vuex-map-fields'
 export const strict = false
 
 export const state = () => ({
-    reports: [],
-    loading: ''
+  reports: [],
+  loading: ''
 })
 
 export const getters = {
@@ -29,13 +29,13 @@ export const mutations = {
 }
 
 export const actions = {
-  cleanTable({commit}) { 
+  cleanTable({ commit }) {
     commit('updateField', {
       path: 'reports',
       value: []
     })
   },
-  async sendFilter({commit}, item) {
+  async sendFilter({ commit }, item) {
 
     const token = this.$cookies.get('refresh-token')
     this.$axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
@@ -55,21 +55,30 @@ export const actions = {
         path: 'loading',
         value: false
       })
-      this.$cookies.set('refresh-token', response.data.refresh_token)
     } catch (error) {
       commit('updateField', {
         path: 'loading',
         value: false
       })
-      if(error.response.status === 422) {
+      if (error.response.status === 422) {
+        this.$cookies.remove("access-token");
+        this.$cookies.remove("refresh-token");
         this.$router.push('/sign')
       }
-      else if(error.response.status === 401) {
+      else if (error.response.status === 401) {
+        this.$cookies.remove("access-token");
         this.$cookies.remove('refresh-token')
         this.$router.push('/sign')
+        this.$toast.show("Başka bir tarayıcıda açık oturumunuz bulunduğu için oturumunuz sonlandırılmıştır !", {
+          theme: "bubble",
+          icon: "check",
+          type: "error",
+          position: "bottom-right",
+          duration: 5000
+        });
       }
       else {
-        this.$router.push({ path: '/error', query: {title: error.response.data, status: error.response.status} })
+        this.$router.push({ path: '/error', query: { title: error.response.data, status: error.response.status } })
       }
     }
   },

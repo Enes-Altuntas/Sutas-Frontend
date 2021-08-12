@@ -160,6 +160,7 @@ export const actions = {
       });
       const response = await this.$axios.post("/login", formData);
       this.$cookies.set("refresh-token", response.data.refresh_token);
+      this.$cookies.set("access-token", response.data.access_token);
       commit("updateField", {
         path: "loading",
         value: false
@@ -171,10 +172,20 @@ export const actions = {
         value: false
       });
       if (error.response.status === 422) {
+        this.$cookies.remove("access-token");
+        this.$cookies.remove("refresh-token");
         this.$router.push("/sign");
       } else if (error.response.status === 401) {
         this.$cookies.remove("refresh-token");
+        this.$cookies.remove("access-token");
         this.$router.push("/sign");
+        this.$toast.show("Başka bir tarayıcıda açık oturumunuz bulunduğu için oturumunuz sonlandırılmıştır !", {
+          theme: "bubble",
+          icon: "check",
+          type: "error",
+          position: "bottom-right",
+          duration: 5000
+        });
       } else {
         this.$router.push({
           path: "/error",
@@ -185,11 +196,13 @@ export const actions = {
   },
 
   logout({ commit }) {
+
     commit("updateField", {
       path: "loading",
       value: true
     });
     this.$cookies.remove("refresh-token");
+    this.$cookies.remove("access-token");
     commit("updateField", {
       path: "loading",
       value: false
@@ -245,17 +258,26 @@ export const actions = {
         path: "loading",
         value: false
       });
-      this.$cookies.set("refresh-token", response.data.refresh_token);
     } catch (error) {
       commit("updateField", {
         path: "loading",
         value: false
       });
       if (error.response.status === 422) {
-        this.$router.push("/sign");
-      } else if (error.response.status === 401) {
+        this.$cookies.remove("access-token");
         this.$cookies.remove("refresh-token");
         this.$router.push("/sign");
+      } else if (error.response.status === 401) {
+        this.$cookies.remove("access-token");
+        this.$cookies.remove("refresh-token");
+        this.$router.push("/sign");
+        this.$toast.show("Başka bir tarayıcıda açık oturumunuz bulunduğu için oturumunuz sonlandırılmıştır !", {
+          theme: "bubble",
+          icon: "check",
+          type: "error",
+          position: "bottom-right",
+          duration: 5000
+        });
       } else {
         this.$router.push({
           path: "/error",
@@ -293,10 +315,20 @@ export const actions = {
         value: false
       });
       if (error.response.status === 422) {
-        this.$router.push("/sign");
-      } else if (error.response.status === 401) {
+        this.$cookies.remove("access-token");
         this.$cookies.remove("refresh-token");
         this.$router.push("/sign");
+      } else if (error.response.status === 401) {
+        this.$cookies.remove("access-token");
+        this.$cookies.remove("refresh-token");
+        this.$router.push("/sign");
+        this.$toast.show("Başka bir tarayıcıda açık oturumunuz bulunduğu için oturumunuz sonlandırılmıştır !", {
+          theme: "bubble",
+          icon: "check",
+          type: "error",
+          position: "bottom-right",
+          duration: 5000
+        });
       } else {
         this.$router.push({
           path: "/error",
@@ -324,17 +356,26 @@ export const actions = {
         path: "loading",
         value: false
       });
-      this.$cookies.set("refresh-token", response.data.refresh_token);
     } catch (error) {
       commit("updateField", {
         path: "loading",
         value: false
       });
       if (error.response.status === 422) {
-        this.$router.push("/sign");
-      } else if (error.response.status === 401) {
+        this.$cookies.remove("access-token");
         this.$cookies.remove("refresh-token");
         this.$router.push("/sign");
+      } else if (error.response.status === 401) {
+        this.$cookies.remove("access-token");
+        this.$cookies.remove("refresh-token");
+        this.$router.push("/sign");
+        this.$toast.show("Başka bir tarayıcıda açık oturumunuz bulunduğu için oturumunuz sonlandırılmıştır !", {
+          theme: "bubble",
+          icon: "check",
+          type: "error",
+          position: "bottom-right",
+          duration: 5000
+        });
       } else {
         this.$router.push({
           path: "/error",
@@ -345,7 +386,6 @@ export const actions = {
   },
 
   async sendCode({ commit }, item) {
-    debugger
     const token = this.$cookies.get("refresh-token");
     this.$axios.defaults.headers.common["Authorization"] = "Bearer " + token;
     try {
@@ -386,10 +426,20 @@ export const actions = {
         value: false
       });
       if (error.response.status === 422) {
-        this.$router.push("/sign");
-      } else if (error.response.status === 401) {
+        this.$cookies.remove("access-token");
         this.$cookies.remove("refresh-token");
         this.$router.push("/sign");
+      } else if (error.response.status === 401) {
+        this.$cookies.remove("access-token");
+        this.$cookies.remove("refresh-token");
+        this.$router.push("/sign");
+        this.$toast.show("Başka bir tarayıcıda açık oturumunuz bulunduğu için oturumunuz sonlandırılmıştır !", {
+          theme: "bubble",
+          icon: "check",
+          type: "error",
+          position: "bottom-right",
+          duration: 5000
+        });
       } else {
         this.$router.push({
           path: "/error",

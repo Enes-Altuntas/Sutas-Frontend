@@ -2,9 +2,9 @@ import { getField, updateField } from 'vuex-map-fields'
 export const strict = false
 
 export const state = () => ({
-    adminDialog: true,
-    loading: '',
-    users: []
+  adminDialog: true,
+  loading: '',
+  users: []
 })
 
 export const getters = {
@@ -37,7 +37,7 @@ export const mutations = {
 }
 
 export const actions = {
-  async sendAdminPass({commit}, item) {
+  async sendAdminPass({ commit }, item) {
 
     const token = this.$cookies.get('refresh-token')
     this.$axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
@@ -48,7 +48,7 @@ export const actions = {
         value: true
       })
       const response = await this.$axios.post('/sendPass', item)
-      
+
 
       commit('updateField', {
         path: 'adminDialog',
@@ -58,33 +58,42 @@ export const actions = {
         path: 'loading',
         value: false
       })
-      this.$toast.show('Girdiğiniz şifre başarıyla doğrulanmıştır.', { 
-        theme: "bubble", 
-        icon : 'check',
+      this.$toast.show('Girdiğiniz şifre başarıyla doğrulanmıştır.', {
+        theme: "bubble",
+        icon: 'check',
         type: 'success',
-        position: "bottom-right", 
-        duration : 3000,
+        position: "bottom-right",
+        duration: 3000,
       })
-      this.$cookies.set('refresh-token', response.data.refresh_token)
     } catch (error) {
       commit('updateField', {
         path: 'loading',
         value: false
       })
-      if(error.response.status === 422) {
+      if (error.response.status === 422) {
+        this.$cookies.remove("access-token");
+        this.$cookies.remove("refresh-token");
         this.$router.push('/sign')
       }
-      else if(error.response.status === 401) {
+      else if (error.response.status === 401) {
+        this.$cookies.remove("access-token");
         this.$cookies.remove('refresh-token')
         this.$router.push('/sign')
+        this.$toast.show("Başka bir tarayıcıda açık oturumunuz bulunduğu için oturumunuz sonlandırılmıştır !", {
+          theme: "bubble",
+          icon: "check",
+          type: "error",
+          position: "bottom-right",
+          duration: 5000
+        });
       }
       else {
-        this.$router.push({ path: '/error', query: {title: error.response.data, status: error.response.status} })
+        this.$router.push({ path: '/error', query: { title: error.response.data, status: error.response.status } })
       }
     }
   },
 
-  async getUsers({commit}, item) {
+  async getUsers({ commit }, item) {
 
     const token = this.$cookies.get('refresh-token')
     this.$axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
@@ -95,7 +104,7 @@ export const actions = {
         value: true
       })
       const response = await this.$axios.post('/getUsers', item)
-      
+
 
       commit('updateField', {
         path: 'users',
@@ -105,33 +114,42 @@ export const actions = {
         path: 'loading',
         value: false
       })
-      this.$toast.show('Kullanıcılar ve şifreleri başarıyla çekilmiştir.', { 
-        theme: "bubble", 
-        icon : 'check',
+      this.$toast.show('Kullanıcılar ve şifreleri başarıyla çekilmiştir.', {
+        theme: "bubble",
+        icon: 'check',
         type: 'success',
-        position: "bottom-right", 
-        duration : 3000,
+        position: "bottom-right",
+        duration: 3000,
       })
-      this.$cookies.set('refresh-token', response.data.refresh_token)
     } catch (error) {
       commit('updateField', {
         path: 'loading',
         value: false
       })
-      if(error.response.status === 422) {
+      if (error.response.status === 422) {
+        this.$cookies.remove("access-token");
+        this.$cookies.remove("refresh-token");
         this.$router.push('/sign')
       }
-      else if(error.response.status === 401) {
+      else if (error.response.status === 401) {
+        this.$cookies.remove("access-token");
         this.$cookies.remove('refresh-token')
         this.$router.push('/sign')
+        this.$toast.show("Başka bir tarayıcıda açık oturumunuz bulunduğu için oturumunuz sonlandırılmıştır !", {
+          theme: "bubble",
+          icon: "check",
+          type: "error",
+          position: "bottom-right",
+          duration: 5000
+        });
       }
       else {
-        this.$router.push({ path: '/error', query: {title: error.response.data, status: error.response.status} })
+        this.$router.push({ path: '/error', query: { title: error.response.data, status: error.response.status } })
       }
     }
   },
 
-  async sendInfoDB({commit}, item) {
+  async sendInfoDB({ commit }, item) {
 
     const token = this.$cookies.get('refresh-token')
     this.$axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
@@ -142,7 +160,7 @@ export const actions = {
         value: true
       })
       const response = await this.$axios.post('/update', item)
-      
+
 
       commit('updateField', {
         path: 'users',
@@ -152,33 +170,42 @@ export const actions = {
         path: 'loading',
         value: false
       })
-      this.$toast.show('Kullanıcı bilgileri başarıyla değiştirilmiştir.', { 
-        theme: "bubble", 
-        icon : 'check',
+      this.$toast.show('Kullanıcı bilgileri başarıyla değiştirilmiştir.', {
+        theme: "bubble",
+        icon: 'check',
         type: 'success',
-        position: "bottom-right", 
-        duration : 3000,
+        position: "bottom-right",
+        duration: 3000,
       })
-      this.$cookies.set('refresh-token', response.data.refresh_token)
     } catch (error) {
       commit('updateField', {
         path: 'loading',
         value: false
       })
-      if(error.response.status === 422) {
+      if (error.response.status === 422) {
+        this.$cookies.remove("access-token");
+        this.$cookies.remove("refresh-token");
         this.$router.push('/sign')
       }
-      else if(error.response.status === 401) {
+      else if (error.response.status === 401) {
+        this.$cookies.remove("access-token");
         this.$cookies.remove('refresh-token')
         this.$router.push('/sign')
+        this.$toast.show("Başka bir tarayıcıda açık oturumunuz bulunduğu için oturumunuz sonlandırılmıştır !", {
+          theme: "bubble",
+          icon: "check",
+          type: "error",
+          position: "bottom-right",
+          duration: 5000
+        });
       }
       else {
-        this.$router.push({ path: '/error', query: {title: error.response.data, status: error.response.status} })
+        this.$router.push({ path: '/error', query: { title: error.response.data, status: error.response.status } })
       }
     }
   },
 
-  async sendDelInfo({commit}, item) {
+  async sendDelInfo({ commit }, item) {
 
     const token = this.$cookies.get('refresh-token')
     this.$axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
@@ -189,7 +216,7 @@ export const actions = {
         value: true
       })
       const response = await this.$axios.post('/delete', item)
-      
+
 
       commit('updateField', {
         path: 'users',
@@ -199,28 +226,37 @@ export const actions = {
         path: 'loading',
         value: false
       })
-      this.$toast.show('Kullanıcı başarıyla silinmiştir.', { 
-        theme: "bubble", 
-        icon : 'check',
+      this.$toast.show('Kullanıcı başarıyla silinmiştir.', {
+        theme: "bubble",
+        icon: 'check',
         type: 'success',
-        position: "bottom-right", 
-        duration : 3000,
+        position: "bottom-right",
+        duration: 3000,
       })
-      this.$cookies.set('refresh-token', response.data.refresh_token)
     } catch (error) {
       commit('updateField', {
         path: 'loading',
         value: false
       })
-      if(error.response.status === 422) {
+      if (error.response.status === 422) {
+        this.$cookies.remove("access-token");
+        this.$cookies.remove("refresh-token");
         this.$router.push('/sign')
       }
-      else if(error.response.status === 401) {
+      else if (error.response.status === 401) {
+        this.$cookies.remove("access-token");
         this.$cookies.remove('refresh-token')
         this.$router.push('/sign')
+        this.$toast.show("Başka bir tarayıcıda açık oturumunuz bulunduğu için oturumunuz sonlandırılmıştır !", {
+          theme: "bubble",
+          icon: "check",
+          type: "error",
+          position: "bottom-right",
+          duration: 5000
+        });
       }
       else {
-        this.$router.push({ path: '/error', query: {title: error.response.data, status: error.response.status} })
+        this.$router.push({ path: '/error', query: { title: error.response.data, status: error.response.status } })
       }
     }
   },

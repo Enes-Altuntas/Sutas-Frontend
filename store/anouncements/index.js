@@ -2,11 +2,11 @@ import { getField, updateField } from 'vuex-map-fields'
 export const strict = false
 
 export const state = () => ({
-    anounces: [],
-    user_ids: [],
-    attaches: [],
-    loading: '',
-    content: []
+  anounces: [],
+  user_ids: [],
+  attaches: [],
+  loading: '',
+  content: []
 })
 
 export const getters = {
@@ -46,7 +46,7 @@ export const mutations = {
 }
 
 export const actions = {
-  async pullAnounce({commit}) {
+  async pullAnounce({ commit }) {
 
     const token = this.$cookies.get('refresh-token')
     this.$axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
@@ -64,26 +64,35 @@ export const actions = {
         path: 'loading',
         value: false
       })
-      this.$cookies.set('refresh-token', response.data.refresh_token)
     } catch (error) {
       commit('updateField', {
         path: 'loading',
         value: false
       })
-      if(error.response.status === 422) {
+      if (error.response.status === 422) {
+        this.$cookies.remove("access-token");
+        this.$cookies.remove("refresh-token");
         this.$router.push('/sign')
       }
-      else if(error.response.status === 401) {
+      else if (error.response.status === 401) {
+        this.$cookies.remove("access-token");
         this.$cookies.remove('refresh-token')
         this.$router.push('/sign')
+        this.$toast.show("Başka bir tarayıcıda açık oturumunuz bulunduğu için oturumunuz sonlandırılmıştır !", {
+          theme: "bubble",
+          icon: "check",
+          type: "error",
+          position: "bottom-right",
+          duration: 5000
+        });
       }
       else {
-        this.$router.push({ path: '/error', query: {title: error.response.data, status: error.response.status} })
+        this.$router.push({ path: '/error', query: { title: error.response.data, status: error.response.status } })
       }
     }
   },
 
-  async sendAnounce({commit},item) {
+  async sendAnounce({ commit }, item) {
 
     const token = this.$cookies.get('refresh-token')
     this.$axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
@@ -102,33 +111,43 @@ export const actions = {
         path: 'loading',
         value: false
       })
-      this.$toast.show('Duyurunuz başarıyla yüklenmiştir.', { 
-        theme: "bubble", 
-        icon : 'check',
+      this.$toast.show('Duyurunuz başarıyla yüklenmiştir.', {
+        theme: "bubble",
+        icon: 'check',
         type: 'success',
-        position: "bottom-right", 
-        duration : 3000,
+        position: "bottom-right",
+        duration: 3000,
       })
-      this.$cookies.set('refresh-token', response.data.refresh_token)
+
     } catch (error) {
       commit('updateField', {
         path: 'loading',
         value: false
       })
-      if(error.response.status === 422) {
+      if (error.response.status === 422) {
+        this.$cookies.remove("access-token");
+        this.$cookies.remove("refresh-token");
         this.$router.push('/sign')
       }
-      else if(error.response.status === 401) {
+      else if (error.response.status === 401) {
+        this.$cookies.remove("access-token");
         this.$cookies.remove('refresh-token')
         this.$router.push('/sign')
+        this.$toast.show("Başka bir tarayıcıda açık oturumunuz bulunduğu için oturumunuz sonlandırılmıştır !", {
+          theme: "bubble",
+          icon: "check",
+          type: "error",
+          position: "bottom-right",
+          duration: 5000
+        });
       }
       else {
-        this.$router.push({ path: '/error', query: {title: error.response.data, status: error.response.status} })
+        this.$router.push({ path: '/error', query: { title: error.response.data, status: error.response.status } })
       }
     }
   },
 
-  async pullAttach({commit},item) {
+  async pullAttach({ commit }, item) {
 
     const token = this.$cookies.get('refresh-token')
     this.$axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
@@ -147,33 +166,42 @@ export const actions = {
         path: 'loading',
         value: false
       })
-      this.$toast.show('Kullanıcı kılavuzlarınız çekilmiştir !', { 
-        theme: "bubble", 
-        icon : 'check',
+      this.$toast.show('Kullanıcı kılavuzlarınız çekilmiştir !', {
+        theme: "bubble",
+        icon: 'check',
         type: 'success',
-        position: "bottom-right", 
-        duration : 3000,
+        position: "bottom-right",
+        duration: 3000,
       })
-      this.$cookies.set('refresh-token', response.data.refresh_token)
     } catch (error) {
       commit('updateField', {
         path: 'loading',
         value: false
       })
-      if(error.response.status === 422) {
+      if (error.response.status === 422) {
+        this.$cookies.remove("access-token");
+        this.$cookies.remove("refresh-token");
         this.$router.push('/sign')
       }
-      else if(error.response.status === 401) {
+      else if (error.response.status === 401) {
+        this.$cookies.remove("access-token");
         this.$cookies.remove('refresh-token')
         this.$router.push('/sign')
+        this.$toast.show("Başka bir tarayıcıda açık oturumunuz bulunduğu için oturumunuz sonlandırılmıştır !", {
+          theme: "bubble",
+          icon: "check",
+          type: "error",
+          position: "bottom-right",
+          duration: 5000
+        });
       }
       else {
-        this.$router.push({ path: '/error', query: {title: error.response.data, status: error.response.status} })
+        this.$router.push({ path: '/error', query: { title: error.response.data, status: error.response.status } })
       }
     }
   },
 
-  async delAnounce({commit},item) {
+  async delAnounce({ commit }, item) {
 
     const token = this.$cookies.get('refresh-token')
     this.$axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
@@ -192,33 +220,42 @@ export const actions = {
         path: 'loading',
         value: false
       })
-      this.$toast.show('Duyurunuz başarıyla silinmiştir.', { 
-        theme: "bubble", 
-        icon : 'check',
+      this.$toast.show('Duyurunuz başarıyla silinmiştir.', {
+        theme: "bubble",
+        icon: 'check',
         type: 'success',
-        position: "bottom-right", 
-        duration : 3000,
+        position: "bottom-right",
+        duration: 3000,
       })
-      this.$cookies.set('refresh-token', response.data.refresh_token)
     } catch (error) {
       commit('updateField', {
         path: 'loading',
         value: false
       })
-      if(error.response.status === 422) {
+      if (error.response.status === 422) {
+        this.$cookies.remove("access-token");
+        this.$cookies.remove("refresh-token");
         this.$router.push('/sign')
       }
-      else if(error.response.status === 401) {
+      else if (error.response.status === 401) {
+        this.$cookies.remove("access-token");
         this.$cookies.remove('refresh-token')
         this.$router.push('/sign')
+        this.$toast.show("Başka bir tarayıcıda açık oturumunuz bulunduğu için oturumunuz sonlandırılmıştır !", {
+          theme: "bubble",
+          icon: "check",
+          type: "error",
+          position: "bottom-right",
+          duration: 5000
+        });
       }
       else {
-        this.$router.push({ path: '/error', query: {title: error.response.data, status: error.response.status} })
+        this.$router.push({ path: '/error', query: { title: error.response.data, status: error.response.status } })
       }
     }
   },
 
-  async pushAttach({commit},item) {
+  async pushAttach({ commit }, item) {
 
     const token = this.$cookies.get('refresh-token')
     this.$axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
@@ -229,7 +266,7 @@ export const actions = {
         value: true
       })
       const response = await this.$axios.post('/pushAttach', item)
-      
+
       commit('updateField', {
         path: 'attaches',
         value: response.data.attaches
@@ -238,33 +275,42 @@ export const actions = {
         path: 'loading',
         value: false
       })
-      this.$toast.show('Ek yüklemem işleminiz başarıyla gerçekleşmiştir !', { 
-        theme: "bubble", 
-        icon : 'check',
+      this.$toast.show('Ek yüklemem işleminiz başarıyla gerçekleşmiştir !', {
+        theme: "bubble",
+        icon: 'check',
         type: 'success',
-        position: "bottom-right", 
-        duration : 3000,
+        position: "bottom-right",
+        duration: 3000,
       })
-      this.$cookies.set('refresh-token', response.data.refresh_token)
     } catch (error) {
       commit('updateField', {
         path: 'loading',
         value: false
       })
-      if(error.response.status === 422) {
+      if (error.response.status === 422) {
+        this.$cookies.remove("access-token");
+        this.$cookies.remove("refresh-token");
         this.$router.push('/sign')
       }
-      else if(error.response.status === 401) {
+      else if (error.response.status === 401) {
+        this.$cookies.remove("access-token");
         this.$cookies.remove('refresh-token')
         this.$router.push('/sign')
+        this.$toast.show("Başka bir tarayıcıda açık oturumunuz bulunduğu için oturumunuz sonlandırılmıştır !", {
+          theme: "bubble",
+          icon: "check",
+          type: "error",
+          position: "bottom-right",
+          duration: 5000
+        });
       }
       else {
-        this.$router.push({ path: '/error', query: {title: error.response.data, status: error.response.status} })
+        this.$router.push({ path: '/error', query: { title: error.response.data, status: error.response.status } })
       }
     }
   },
 
-  async delAttach({commit},item) {
+  async delAttach({ commit }, item) {
 
     const token = this.$cookies.get('refresh-token')
     this.$axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
@@ -275,7 +321,7 @@ export const actions = {
         value: true
       })
       const response = await this.$axios.post('/delHelpAtt', item)
-      
+
       commit('updateField', {
         path: 'attaches',
         value: response.data.attaches
@@ -284,28 +330,37 @@ export const actions = {
         path: 'loading',
         value: false
       })
-      this.$toast.show('Ek silme işleminiz başarıyla gerçekleşmiştir !', { 
-        theme: "bubble", 
-        icon : 'check',
+      this.$toast.show('Ek silme işleminiz başarıyla gerçekleşmiştir !', {
+        theme: "bubble",
+        icon: 'check',
         type: 'success',
-        position: "bottom-right", 
-        duration : 3000,
+        position: "bottom-right",
+        duration: 3000,
       })
-      this.$cookies.set('refresh-token', response.data.refresh_token)
     } catch (error) {
       commit('updateField', {
         path: 'loading',
         value: false
       })
-      if(error.response.status === 422) {
+      if (error.response.status === 422) {
+        this.$cookies.remove("access-token");
+        this.$cookies.remove("refresh-token");
         this.$router.push('/sign')
       }
-      else if(error.response.status === 401) {
+      else if (error.response.status === 401) {
+        this.$cookies.remove("access-token");
         this.$cookies.remove('refresh-token')
         this.$router.push('/sign')
+        this.$toast.show("Başka bir tarayıcıda açık oturumunuz bulunduğu için oturumunuz sonlandırılmıştır !", {
+          theme: "bubble",
+          icon: "check",
+          type: "error",
+          position: "bottom-right",
+          duration: 5000
+        });
       }
       else {
-        this.$router.push({ path: '/error', query: {title: error.response.data, status: error.response.status} })
+        this.$router.push({ path: '/error', query: { title: error.response.data, status: error.response.status } })
       }
     }
   }
