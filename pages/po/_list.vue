@@ -648,7 +648,12 @@
                   </v-flex>
                   <v-flex
                     xs12
-                    class="text-xs-center text-sm-center text-md-center text-lg-center"
+                    class="
+                      text-xs-center
+                      text-sm-center
+                      text-md-center
+                      text-lg-center
+                    "
                   >
                     <v-text-field
                       label="Dosya Seçiniz"
@@ -2037,9 +2042,8 @@ export default {
       this.detailedItem.revDesc = this.po_list[this.detailedIndex].revDesc;
       this.detailedItem.decDesc = this.po_list[this.detailedIndex].decDesc;
       this.detailedItem.rejDesc = this.po_list[this.detailedIndex].rejDesc;
-      this.detailedItem.rejPlanDesc = this.po_list[
-        this.detailedIndex
-      ].rejPlanDesc;
+      this.detailedItem.rejPlanDesc =
+        this.po_list[this.detailedIndex].rejPlanDesc;
       this.detailedItem.posting_date = this.dateFormatted(
         this.po_list[this.detailedIndex].BEDAT
       );
@@ -2297,6 +2301,8 @@ export default {
           EKPO_CASN_QUAN: undefined,
           EKPO_MEINS_T: item.EKPO_MEINS_T,
           REM_MENGE: item.EKPO_MENGE - item.EKPO_CASN_QUAN,
+          EKPO_WERKS: item.EKPO_WERKS,
+          EKET_EINDT: item.EKET_EINDT,
         };
         this.roadSelected.push(itemTree);
       });
